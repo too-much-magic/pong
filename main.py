@@ -38,6 +38,13 @@ class Pong:
         if random.randint(0, 1) == 0:
             self.ball_velocity[1] *= -1
 
+        self.bumper_hit_sound = pygame.mixer.Sound("sounds/bumper_hit.wav")
+        self.wall_hit_sound = pygame.mixer.Sound("sounds/wall_hit.wav")
+        self.game_over_sound = pygame.mixer.Sound("sounds/game_over.wav")
+
+        self.AI_mode = True
+        self.direction = "DOWN"
+
         self.BASE0 = (131, 148, 150)
         self.BASE01 = (88, 110, 117)
         self.BASE03 = (0, 43, 54)
@@ -71,28 +78,48 @@ class Pong:
             if keys[pygame.K_s] and self.player_bumper.y < 600 - self.PADDING - self.player_bumper.height:
                 self.player_bumper.y += VELOCITY
 
-            if keys[pygame.K_UP] and self.enemy_bumper.y > self.PADDING:
-                self.enemy_bumper.y -= VELOCITY
-            if keys[pygame.K_DOWN] and self.enemy_bumper.y < 600 - self.PADDING - self.enemy_bumper.height:
-                self.enemy_bumper.y += VELOCITY
+            if not self.AI_mode:
+                if keys[pygame.K_UP] and self.enemy_bumper.y > self.PADDING:
+                    self.enemy_bumper.y -= VELOCITY
+                if keys[pygame.K_DOWN] and self.enemy_bumper.y < 600 - self.PADDING - self.enemy_bumper.height:
+                    self.enemy_bumper.y += VELOCITY
+
+            else:
+                if self.direction == "DOWN":
+                    self.enemy_bumper.y += VELOCITY
+
+                if self.direction == "UP":
+                    self.enemy_bumper.y -= VELOCITY
+
+                if self.enemy_bumper.y > self.PADDING and self.enemy_bumper.y + 50 > self.ball.y \
+                        and pygame.time.get_ticks() % 500 > 150:
+                    self.direction = "UP"
+
+                if self.enemy_bumper.y < 600 - self.PADDING - self.enemy_bumper.height and self.enemy_bumper.y + 50 < self.ball.y \
+                        and pygame.time.get_ticks() % 500 > 150:
+                    self.direction = "DOWN"
 
             if self.ball.y < 0 + self.PADDING or self.ball.y > 600 - self.PADDING * 2:
                 self.ball_velocity[1] *= -1
+                pygame.mixer.Sound.play(self.wall_hit_sound)
 
             if self.PADDING < self.ball.x < self.PADDING * 2 and \
                     self.player_bumper.y < self.ball.y < self.player_bumper.y + 100:
                 self.ball_velocity[0] = 5
+                pygame.mixer.Sound.play(self.bumper_hit_sound)
 
             if self.ball.x + self.PADDING > 800 - self.PADDING * 2 and \
                     self.enemy_bumper.y < self.ball.y < self.enemy_bumper.y + 100:
                 self.ball_velocity[0] = -5
+                pygame.mixer.Sound.play(self.bumper_hit_sound)
+
 
             if self.ball.x < 0:
                 self.enemy_score += 1
                 self.ball.x = self.screen_rect.centerx
                 self.ball.y = self.screen_rect.centery
                 self.ball_velocity = [0,0]
-
+                pygame.mixer.Sound.play(self.game_over_sound)
                 print("enemy scored")
 
             if self.ball.x > 800 - self.PADDING:
@@ -100,6 +127,7 @@ class Pong:
                 self.ball.x = self.screen_rect.centerx
                 self.ball.y = self.screen_rect.centery
                 self.ball_velocity = [0,0]
+                pygame.mixer.Sound.play(self.game_over_sound)
                 print("player scored")
 
             self.ball.x += self.ball_velocity[0]
