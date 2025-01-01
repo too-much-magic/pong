@@ -1,0 +1,23 @@
+> this project as part of 20 games challenge.
+
+# goals
+## learning the basics
+> 
+    Using your game engine of choice!
+    Creating and destroying objects.
+    Processing player input and moving objects on screen.
+    Detecting and reacting to collisions.
+## components of a successful project:
+### primary
+> 
+    Create an arena with two walls and a divider.
+    Add a paddle on either end of the play field. Use player inputs to move the paddles up and down.
+    Add a ball that moves around the playfield and bounces off of the paddles and walls.
+    Detect when the ball leaves the playfield. Assign a point to the player who scored.
+    Track and display the score for each player.
+### stretch
+> 
+    Write an AI script that can follow the ball so you can play with only one player.
+    Hint: Following the ball with a paddle is easy, but it makes the opponent impossible to beat. You might want to make the AI less than perfect somehow.
+    Add a menu and allow the player to reset the game.
+    Add some basic sounds. Play a sound every time the ball collides with something, and every time a player scores.
