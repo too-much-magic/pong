@@ -18,7 +18,6 @@ class Pong:
         screen_center = self.screen_rect.center
 
         self.PADDING = 15
-        # TODO: update padding to use constant
 
         self.player_bumper = pygame.Rect(self.PADDING, screen_center[1] - 50, self.PADDING, 100)
         self.enemy_bumper = pygame.Rect(800 - self.PADDING * 2, screen_center[1] - 50, self.PADDING, 100)
