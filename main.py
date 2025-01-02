@@ -6,13 +6,6 @@ import random
 class Pong:
     """Larger class to manage the game."""
 
-    """
-    TODO:
-    Helper functions for:
-    - collisions
-    - end game
-    """
-
     def __init__(self):
         pygame.init()
         self.clock = pygame.time.Clock()
